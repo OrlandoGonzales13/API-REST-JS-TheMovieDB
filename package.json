@@ -1,0 +1,19 @@
+{
+  "name": "api-rest-js-themoviedb",
+  "version": "1.0.0",
+  "description": "Consumo de API REST con JS",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/OrlandoGonzales13/API-REST-JS-TheMovieDB.git"
+  },
+  "author": "@orlando13gonzales",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/OrlandoGonzales13/API-REST-JS-TheMovieDB/issues"
+  },
+  "homepage": "https://github.com/OrlandoGonzales13/API-REST-JS-TheMovieDB#readme"
+}
