@@ -1,3 +1,6 @@
+getTrendingMoviesPreview();
+getCategoriesList();
+
 //GET -  PELICULAS EN TENDENDIA PARA EL HOME - PREVIEW
 async function getTrendingMoviesPreview() {
     const res = await fetch('https://api.themoviedb.org/3/trending/movie/day?api_key=' + API_KEY)
@@ -25,4 +28,34 @@ async function getTrendingMoviesPreview() {
     });
 }
 
-getTrendingMoviesPreview();
+//GET - LISTA DE CATEGORIAS
+async function getCategoriesList() {
+    const res = await fetch('https://api.themoviedb.org/3/genre/movie/list?api_key=' + API_KEY + '&language=es')
+    const data = await res.json();
+
+    const categories = data.genres;
+    console.log({ data, categories }); //revisar datos que traemos
+
+    categories.forEach(category => {
+
+        const categoriesPreview = document.getElementById('categoriesPreview')
+
+        const categoriesPreviewList = document.createElement('article')
+        categoriesPreviewList.classList.add('categoriesPreview-list')
+
+        const categoryContainer = document.createElement('div')
+        categoryContainer.classList.add('category-container')
+
+        const categoryTitle = document.createElement('h3')
+        categoryTitle.classList.add('category-title')
+        categoryTitle.setAttribute('id', 'id' + category.id)
+        const categoryTitleText = document.createTextNode(category.name)
+
+        categoriesPreview.appendChild(categoriesPreviewList)
+        categoriesPreviewList.appendChild(categoryContainer);
+        categoryContainer.appendChild(categoryTitle);
+        categoryTitle.appendChild(categoryTitleText)
+
+    });
+}
+
