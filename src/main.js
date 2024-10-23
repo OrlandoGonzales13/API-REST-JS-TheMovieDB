@@ -9,9 +9,6 @@ const api = axios.create({
     }
 });
 
-getTrendingMoviesPreview();
-getCategoriesList();
-
 //GET -  PELICULAS EN TENDENDIA PARA EL HOME - PREVIEW
 async function getTrendingMoviesPreview() {
     const { data } = await api('trending/movie/day')
@@ -20,7 +17,7 @@ async function getTrendingMoviesPreview() {
     //console.log({ data, movies }); //revisar datos que traemos
 
     movies.forEach(movie => {
-        const trendingPreviewMoviesContainer = document.querySelector('#trendingPreview .trendingPreview-movieList')
+        const trendingMoviesPreviewList = document.querySelector('#trendingPreview .trendingPreview-movieList')
 
         const movieContainer = document.createElement('div');
         movieContainer.classList.add('movie-container');
@@ -34,37 +31,28 @@ async function getTrendingMoviesPreview() {
         );
 
         movieContainer.appendChild(movieImg);
-        trendingPreviewMoviesContainer.appendChild(movieContainer);
+        trendingMoviesPreviewList.appendChild(movieContainer);
     });
 }
 
 //GET - LISTA DE CATEGORIAS
-async function getCategoriesList() {
-    const { data } = await api('genre/movie/list')
-
+async function getCategoriesPreview() {
+    const { data } = await api('genre/movie/list');
     const categories = data.genres;
-    //console.log({ data, categories }); //revisar datos que traemos
 
     categories.forEach(category => {
+        const categoriesPreviewList = document.querySelector('#categoriesPreview .categoriesPreview-list')
 
-        const categoriesPreview = document.getElementById('categoriesPreview')
+        const categoryContainer = document.createElement('div');
+        categoryContainer.classList.add('category-container');
 
-        const categoriesPreviewList = document.createElement('article')
-        categoriesPreviewList.classList.add('categoriesPreview-list')
+        const categoryTitle = document.createElement('h3');
+        categoryTitle.classList.add('category-title');
+        categoryTitle.setAttribute('id', 'id' + category.id);
+        const categoryTitleText = document.createTextNode(category.name);
 
-        const categoryContainer = document.createElement('div')
-        categoryContainer.classList.add('category-container')
-
-        const categoryTitle = document.createElement('h3')
-        categoryTitle.classList.add('category-title')
-        categoryTitle.setAttribute('id', 'id' + category.id)
-        const categoryTitleText = document.createTextNode(category.name)
-
-        categoriesPreview.appendChild(categoriesPreviewList)
-        categoriesPreviewList.appendChild(categoryContainer);
+        categoryTitle.appendChild(categoryTitleText);
         categoryContainer.appendChild(categoryTitle);
-        categoryTitle.appendChild(categoryTitleText)
-
+        categoriesPreviewList.appendChild(categoryContainer);
     });
 }
-
