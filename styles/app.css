@@ -428,3 +428,108 @@ footer {
 .inactive {
     display: none;
 }
+
+/* General settings already defined */
+
+/* === Tablet (768px - 1024px) === */
+@media (min-width: 768px) and (max-width: 1024px) {
+    .header-container {
+        padding-top: 60px;
+    }
+
+    .header-container--long {
+        height: 400px;
+    }
+
+    .trendingPreview-movieList {
+        height: 280px;
+    }
+
+    .trendingPreview-movieList .movie-container .movie-img {
+        height: 250px;
+        min-height: 250px;
+        max-height: 250px;
+        width: 170px;
+        min-width: 170px;
+        max-width: 170px;
+    }
+
+    .category-container {
+        width: 30%;
+    }
+
+    .genericList-container .movie-container {
+        width: 30%;
+    }
+
+    .relatedMovies-scrollContainer .movie-img {
+        width: 150px;
+        min-width: 150px;
+        max-width: 150px;
+        height: 225px;
+        min-height: 225px;
+        max-height: 225px;
+    }
+
+    footer {
+        height: 64px;
+    }
+}
+
+/* === Desktop (mayores a 1024px) === */
+@media (min-width: 1024px) {
+    .header-container {
+        padding-top: 80px;
+    }
+
+    .header-container--long {
+        height: 600px;
+    }
+
+    .trendingPreview-movieList {
+        height: 360px;
+    }
+
+    .trendingPreview-movieList .movie-container .movie-img {
+        height: 320px;
+        min-height: 320px;
+        max-height: 320px;
+        width: 220px;
+        min-width: 220px;
+        max-width: 220px;
+    }
+
+    .categoriesPreview-list,
+    .genericList-container {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        grid-gap: 16px;
+        justify-items: center;
+    }
+
+    .category-container {
+        width: 100%;
+    }
+
+    .genericList-container .movie-container {
+        width: 100%;
+    }
+
+    .relatedMovies-scrollContainer .movie-img {
+        width: 180px;
+        min-width: 180px;
+        max-width: 180px;
+        height: 270px;
+        min-height: 270px;
+        max-height: 270px;
+    }
+
+    footer {
+        height: 80px;
+    }
+
+    /* Asegurarse de que la clase inactive funcione */
+    .inactive {
+        display: none !important;
+    }
+}
