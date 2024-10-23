@@ -18,8 +18,56 @@ async function getTrendingMoviesPreview() {
 
     trendingMoviesPreviewList.innerHTML = " ";
 
-    movies.forEach(movie => {
+    createMovies(movies, trendingMoviesPreviewList);
+}
 
+//GET - PELICULAS EN TENDENCIA - TRENDS
+async function getTrendingMovies() {
+    const { data } = await api('trending/movie/day')
+
+    const movies = data.results;
+    //console.log({ data, movies }); //revisar datos que traemos
+
+    genericSection.innerHTML = " ";
+
+    createMovies(movies, genericSection);
+}
+
+//GET - LISTA DE CATEGORIAS
+async function getCategoriesPreview() {
+    const { data } = await api('genre/movie/list');
+    const categories = data.genres;
+
+    categoriesPreviewList.innerHTML = "";
+
+    createCategories(categories, categoriesPreviewList);
+}
+
+//GET -  CATEGORIAS ID 
+async function getMoviesByCategory(id) {
+    window.scrollTo(0, 0)
+
+    const { data } = await api('discover/movie', {
+        params: {
+            with_genres: id,
+        },
+    })
+
+    const movies = data.results;
+    //console.log({ data, movies }); //revisar datos que traemos
+
+    genericSection.innerHTML = " ";
+
+    createMovies(movies, genericSection);
+}
+
+//-------------UTILS-------------
+
+//GENERADOR DE LISTADO DE PELICULAS
+function createMovies(movies, container) {
+    container.innerHTML = ""; // Limpiar el contenedor
+
+    movies.forEach(movie => {
         const movieContainer = document.createElement('div');
         movieContainer.classList.add('movie-container');
 
@@ -32,16 +80,13 @@ async function getTrendingMoviesPreview() {
         );
 
         movieContainer.appendChild(movieImg);
-        trendingMoviesPreviewList.appendChild(movieContainer);
+        container.appendChild(movieContainer);
     });
 }
 
-//GET - LISTA DE CATEGORIAS
-async function getCategoriesPreview() {
-    const { data } = await api('genre/movie/list');
-    const categories = data.genres;
-
-    categoriesPreviewList.innerHTML = "";
+//GENERADOR DE LISTADO DE CATEGORIAS
+function createCategories(categories, container) {
+    container.innerHTML = ""; // Limpiar el contenedor
 
     categories.forEach(category => {
 
@@ -51,10 +96,13 @@ async function getCategoriesPreview() {
         const categoryTitle = document.createElement('h3');
         categoryTitle.classList.add('category-title');
         categoryTitle.setAttribute('id', 'id' + category.id);
+        categoryTitle.addEventListener('click', () => {
+            location.hash = `#category=${category.id}-${category.name}`;
+        });
         const categoryTitleText = document.createTextNode(category.name);
 
         categoryTitle.appendChild(categoryTitleText);
         categoryContainer.appendChild(categoryTitle);
-        categoriesPreviewList.appendChild(categoryContainer);
+        container.appendChild(categoryContainer);
     });
 }

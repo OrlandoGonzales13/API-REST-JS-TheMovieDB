@@ -24,6 +24,8 @@ function navigator() {
     } else {
         homePage();
     }
+
+    window.scrollTop(0, 0);
 }
 
 
@@ -63,6 +65,11 @@ function categoriesPage() {
     genericSection.classList.remove('inactive');
     movieDetailSection.classList.add('inactive');
 
+    const [_, categoryData] = location.hash.split('=') //=> ['category', 'id-name']
+    const [categoryId, categoryName] = categoryData.split('-');
+
+    headerCategoryTitle.innerHTML = decodeURIComponent(categoryName);
+    getMoviesByCategory(categoryId);
 }
 
 function movieDetailsPage() {
@@ -114,4 +121,6 @@ function trendsPage() {
     genericSection.classList.remove('inactive');
     movieDetailSection.classList.add('inactive');
 
+    headerCategoryTitle.innerHTML = 'Tendencias';
+    getTrendingMovies();
 }
