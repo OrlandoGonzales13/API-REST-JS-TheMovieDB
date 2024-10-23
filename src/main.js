@@ -61,6 +61,25 @@ async function getMoviesByCategory(id) {
     createMovies(movies, genericSection);
 }
 
+//GET - SEARCH
+async function getMoviesBySearch(query) {
+    window.scrollTo(0, 0)
+
+    const { data } = await api('search/movie', {
+        params: {
+            query,
+        },
+    })
+
+    const movies = data.results;
+    //console.log({ data, movies }); //revisar datos que traemos
+
+    genericSection.innerHTML = " ";
+
+    createMovies(movies, genericSection);
+}
+
+
 //-------------UTILS-------------
 
 //GENERADOR DE LISTADO DE PELICULAS
