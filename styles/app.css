@@ -488,15 +488,17 @@ footer {
 
     .trendingPreview-movieList {
         height: 360px;
+        /* Ajusta la altura si es necesario */
     }
 
+    /* Cambia el tamaño de las imágenes de las películas */
     .trendingPreview-movieList .movie-container .movie-img {
-        height: 320px;
-        min-height: 320px;
-        max-height: 320px;
-        width: 220px;
-        min-width: 220px;
-        max-width: 220px;
+        height: 180px;
+        /* Ajusta la altura de la imagen */
+        width: auto;
+        /* Mantiene la proporción */
+        max-width: 100%;
+        /* Asegura que no exceda el contenedor */
     }
 
     .categoriesPreview-list,
@@ -515,17 +517,63 @@ footer {
         width: 100%;
     }
 
-    .relatedMovies-scrollContainer .movie-img {
-        width: 180px;
-        min-width: 180px;
-        max-width: 180px;
-        height: 270px;
-        min-height: 270px;
-        max-height: 270px;
+    /* Centrar el contenedor de detalle de película */
+    .movieDetail-container {
+        padding: 40px;
+        width: 100%;
+        margin: 15% auto;
+        /* Centramos el contenedor */
+        background-color: var(--purple-light-1);
+        border-radius: 16px;
+        z-index: 10;
     }
 
+    /* Ajustes para el scroll horizontal */
+    .relatedMovies-scrollContainer {
+        display: flex;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        /* Permitir desplazamiento horizontal */
+        padding-bottom: 20px;
+        /* Añadir espacio abajo */
+        gap: 16px;
+        scrollbar-width: none;
+        /* Ocultar scrollbar en Firefox */
+        scroll-behavior: smooth;
+        justify-content: flex-start;
+        /* Alineación a la izquierda */
+    }
+
+    /* Para ocultar scrollbar en navegadores basados en WebKit (Chrome, Safari) */
+    .relatedMovies-scrollContainer::-webkit-scrollbar {
+        display: none;
+        /* Ocultar scrollbar */
+    }
+
+    .relatedMovies-scrollContainer .movie-container {
+        flex: 0 0 auto;
+        width: 150px;
+        /* Ajusta el ancho del contenedor de películas */
+        max-width: 150px;
+        /* Limitar el ancho máximo de las imágenes */
+    }
+
+    .relatedMovies-scrollContainer .movie-img {
+        width: 100%;
+        /* Mantiene el ancho del contenedor */
+        height: auto;
+        /* Mantiene la proporción de la imagen */
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Footer con tamaño adecuado */
     footer {
         height: 80px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: var(--purple-dark);
     }
 
     /* Asegurarse de que la clase inactive funcione */
