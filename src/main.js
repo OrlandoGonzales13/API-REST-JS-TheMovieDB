@@ -9,6 +9,70 @@ const api = axios.create({
     }
 });
 
+//-------------UTILS-------------
+
+//Intersection Observer - Lazy Loader
+const lazyLoader = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+            const url = entry.target.getAttribute('data-img')
+            entry.target.setAttribute('src', url);
+        }
+    });
+});
+
+//GENERADOR DE LISTADO DE PELICULAS
+function createMovies(movies, container, lazyLoad = false) {
+    container.innerHTML = ""; // Limpiar el contenedor
+
+    movies.forEach(movie => {
+        const movieContainer = document.createElement('div');
+        movieContainer.classList.add('movie-container');
+        movieContainer.addEventListener('click', () => {
+            location.hash = '#movie=' + movie.id
+        })
+
+        const movieImg = document.createElement('img');
+        movieImg.classList.add('movie-img');
+        movieImg.setAttribute('alt', movie.title);
+        movieImg.setAttribute(
+            lazyLoad ? 'data-img' : 'src',
+            'https://image.tmdb.org/t/p/w300' + movie.poster_path,
+        );
+
+        if (lazyLoad) {
+            lazyLoader.observe(movieImg)
+        }
+
+        movieContainer.appendChild(movieImg);
+        container.appendChild(movieContainer);
+    });
+}
+
+//GENERADOR DE LISTADO DE CATEGORIAS
+function createCategories(categories, container) {
+    container.innerHTML = ""; // Limpiar el contenedor
+
+    categories.forEach(category => {
+
+        const categoryContainer = document.createElement('div');
+        categoryContainer.classList.add('category-container');
+
+        const categoryTitle = document.createElement('h3');
+        categoryTitle.classList.add('category-title');
+        categoryTitle.setAttribute('id', 'id' + category.id);
+        categoryTitle.addEventListener('click', () => {
+            location.hash = `#category=${category.id}-${category.name}`;
+        });
+        const categoryTitleText = document.createTextNode(category.name);
+
+        categoryTitle.appendChild(categoryTitleText);
+        categoryContainer.appendChild(categoryTitle);
+        container.appendChild(categoryContainer);
+    });
+}
+
+
 //GET -  PELICULAS EN TENDENDIA PARA EL HOME - PREVIEW
 async function getTrendingMoviesPreview() {
     const { data } = await api('trending/movie/day')
@@ -18,7 +82,7 @@ async function getTrendingMoviesPreview() {
 
     trendingMoviesPreviewList.innerHTML = " ";
 
-    createMovies(movies, trendingMoviesPreviewList);
+    createMovies(movies, trendingMoviesPreviewList, true);
 
 }
 
@@ -109,52 +173,4 @@ async function getRelatedMoviesId(id) {
     createMovies(relatedMovies, relatedMoviesContainer)
 }
 
-//-------------UTILS-------------
-
-//GENERADOR DE LISTADO DE PELICULAS
-function createMovies(movies, container) {
-    container.innerHTML = ""; // Limpiar el contenedor
-
-    movies.forEach(movie => {
-        const movieContainer = document.createElement('div');
-        movieContainer.classList.add('movie-container');
-        movieContainer.addEventListener('click', () => {
-            location.hash = '#movie=' + movie.id
-        })
-
-        const movieImg = document.createElement('img');
-        movieImg.classList.add('movie-img');
-        movieImg.setAttribute('alt', movie.title);
-        movieImg.setAttribute(
-            'src',
-            'https://image.tmdb.org/t/p/w300' + movie.poster_path,
-        );
-
-        movieContainer.appendChild(movieImg);
-        container.appendChild(movieContainer);
-    });
-}
-
-//GENERADOR DE LISTADO DE CATEGORIAS
-function createCategories(categories, container) {
-    container.innerHTML = ""; // Limpiar el contenedor
-
-    categories.forEach(category => {
-
-        const categoryContainer = document.createElement('div');
-        categoryContainer.classList.add('category-container');
-
-        const categoryTitle = document.createElement('h3');
-        categoryTitle.classList.add('category-title');
-        categoryTitle.setAttribute('id', 'id' + category.id);
-        categoryTitle.addEventListener('click', () => {
-            location.hash = `#category=${category.id}-${category.name}`;
-        });
-        const categoryTitleText = document.createTextNode(category.name);
-
-        categoryTitle.appendChild(categoryTitleText);
-        categoryContainer.appendChild(categoryTitle);
-        container.appendChild(categoryContainer);
-    });
-}
 
