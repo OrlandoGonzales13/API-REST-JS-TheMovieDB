@@ -115,6 +115,27 @@ footer {
     cursor: pointer;
 }
 
+.movie-container--loading {
+    background: var(--purple-light-2);
+    border-radius: 8px;
+    height: 225px;
+    min-height: 225px;
+    max-height: 225px;
+    width: 150px;
+    min-width: 150px;
+    max-width: 150px;
+    margin-bottom: 15px;
+    animation: loading-skeleton infinite 1.5s;
+}
+
+.movie-container--loading:nth-child(2) {
+    animation-delay: .2s;
+}
+
+.movie-container--loading:nth-child(3) {
+    animation-delay: .4s;
+}
+
 .movie-img {
     border-radius: 8px;
 }
@@ -126,6 +147,23 @@ footer {
     justify-content: space-between;
     position: relative;
     flex-wrap: wrap;
+}
+
+.category-container--loading {
+    background: var(--purple-light-2);
+    border-radius: 8px;
+    height: 25px;
+    min-height: 25px;
+    max-height: 25px;
+    width: 150px;
+    min-width: 150px;
+    max-width: 150px;
+    margin-bottom: 15px;
+    animation: loading-skeleton infinite 1.5s;
+}
+
+.category-container--loading:nth-child(2) {
+    animation-delay: .2s;
 }
 
 
@@ -395,11 +433,21 @@ footer {
     white-space: nowrap;
     width: calc(100vw - 24px);
     padding-bottom: 16px;
+    max-height: 225px;
 }
 
 .relatedMovies-scrollContainer .movie-container {
     display: inline-block;
     margin-right: 8px;
+}
+
+.relatedMovies-scrollContainer .movie-container--loading {
+    width: 125px;
+    min-width: 125px;
+    max-width: 125px;
+    height: 187.5px;
+    min-height: 187.5px;
+    max-height: 187.5px;
 }
 
 .relatedMovies-scrollContainer .movie-img {
@@ -429,155 +477,16 @@ footer {
     display: none;
 }
 
-/* General settings already defined */
 
-/* === Tablet (768px - 1024px) === */
-@media (min-width: 768px) and (max-width: 1024px) {
-    .header-container {
-        padding-top: 60px;
+/* Animations */
+@keyframes loading-skeleton {
+
+    0%,
+    100% {
+        opacity: 100%;
     }
 
-    .header-container--long {
-        height: 400px;
-    }
-
-    .trendingPreview-movieList {
-        height: 280px;
-    }
-
-    .trendingPreview-movieList .movie-container .movie-img {
-        height: 250px;
-        min-height: 250px;
-        max-height: 250px;
-        width: 170px;
-        min-width: 170px;
-        max-width: 170px;
-    }
-
-    .category-container {
-        width: 30%;
-    }
-
-    .genericList-container .movie-container {
-        width: 30%;
-    }
-
-    .relatedMovies-scrollContainer .movie-img {
-        width: 150px;
-        min-width: 150px;
-        max-width: 150px;
-        height: 225px;
-        min-height: 225px;
-        max-height: 225px;
-    }
-
-    footer {
-        height: 64px;
-    }
-}
-
-/* === Desktop (mayores a 1024px) === */
-@media (min-width: 1024px) {
-    .header-container {
-        padding-top: 80px;
-    }
-
-    .header-container--long {
-        height: 600px;
-    }
-
-    .trendingPreview-movieList {
-        height: 360px;
-        /* Ajusta la altura si es necesario */
-    }
-
-    /* Cambia el tamaño de las imágenes de las películas */
-    .trendingPreview-movieList .movie-container .movie-img {
-        height: 180px;
-        /* Ajusta la altura de la imagen */
-        width: auto;
-        /* Mantiene la proporción */
-        max-width: 100%;
-        /* Asegura que no exceda el contenedor */
-    }
-
-    .categoriesPreview-list,
-    .genericList-container {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        grid-gap: 16px;
-        justify-items: center;
-    }
-
-    .category-container {
-        width: 100%;
-    }
-
-    .genericList-container .movie-container {
-        width: 100%;
-    }
-
-    /* Centrar el contenedor de detalle de película */
-    .movieDetail-container {
-        padding: 40px;
-        width: 100%;
-        margin: 15% auto;
-        /* Centramos el contenedor */
-        background-color: var(--purple-light-1);
-        border-radius: 16px;
-        z-index: 10;
-    }
-
-    /* Ajustes para el scroll horizontal */
-    .relatedMovies-scrollContainer {
-        display: flex;
-        flex-wrap: nowrap;
-        overflow-x: auto;
-        /* Permitir desplazamiento horizontal */
-        padding-bottom: 20px;
-        /* Añadir espacio abajo */
-        gap: 16px;
-        scrollbar-width: none;
-        /* Ocultar scrollbar en Firefox */
-        scroll-behavior: smooth;
-        justify-content: flex-start;
-        /* Alineación a la izquierda */
-    }
-
-    /* Para ocultar scrollbar en navegadores basados en WebKit (Chrome, Safari) */
-    .relatedMovies-scrollContainer::-webkit-scrollbar {
-        display: none;
-        /* Ocultar scrollbar */
-    }
-
-    .relatedMovies-scrollContainer .movie-container {
-        flex: 0 0 auto;
-        width: 150px;
-        /* Ajusta el ancho del contenedor de películas */
-        max-width: 150px;
-        /* Limitar el ancho máximo de las imágenes */
-    }
-
-    .relatedMovies-scrollContainer .movie-img {
-        width: 100%;
-        /* Mantiene el ancho del contenedor */
-        height: auto;
-        /* Mantiene la proporción de la imagen */
-        border-radius: 8px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    }
-
-    /* Footer con tamaño adecuado */
-    footer {
-        height: 80px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background-color: var(--purple-dark);
-    }
-
-    /* Asegurarse de que la clase inactive funcione */
-    .inactive {
-        display: none !important;
+    50% {
+        opacity: 0%;
     }
 }

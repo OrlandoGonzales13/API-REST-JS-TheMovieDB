@@ -19,6 +19,7 @@ async function getTrendingMoviesPreview() {
     trendingMoviesPreviewList.innerHTML = " ";
 
     createMovies(movies, trendingMoviesPreviewList);
+
 }
 
 //GET - PELICULAS EN TENDENCIA - TRENDS
@@ -156,3 +157,4 @@ function createCategories(categories, container) {
         container.appendChild(categoryContainer);
     });
 }
+
