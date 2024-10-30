@@ -34,11 +34,18 @@ function createMovies(movies, container, lazyLoad = false) {
 
         const movieImg = document.createElement('img');
         movieImg.classList.add('movie-img');
+        movieImg.setAttribute('loading', 'lazy');
         movieImg.setAttribute('alt', movie.title);
         movieImg.setAttribute(
             lazyLoad ? 'data-img' : 'src',
             'https://image.tmdb.org/t/p/w300' + movie.poster_path,
         );
+
+        movieImg.addEventListener('error', () => {
+            movieImg.setAttribute('src', 'https://media.istockphoto.com/id/1222249647/photo/creative-illustration.jpg?s=612x612&w=0&k=20&c=N6foEeJRoGSTl1LcN1RJ1aP_G3FhZ8aWku30iwtmT4A=');
+        })
+
+
 
         if (lazyLoad) {
             lazyLoader.observe(movieImg)
@@ -123,7 +130,7 @@ async function getMoviesByCategory(id) {
 
     genericSection.innerHTML = " ";
 
-    createMovies(movies, genericSection);
+    createMovies(movies, genericSection, true);
 }
 
 //GET - SEARCH
