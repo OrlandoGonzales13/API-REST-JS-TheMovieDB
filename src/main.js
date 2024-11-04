@@ -22,8 +22,17 @@ const lazyLoader = new IntersectionObserver((entries) => {
 });
 
 //GENERADOR DE LISTADO DE PELICULAS
-function createMovies(movies, container, lazyLoad = false) {
-    container.innerHTML = ""; // Limpiar el contenedor
+function createMovies(
+    movies,
+    container, {
+        lazyLoad = false,
+        clean = true,
+    } = {}
+) {
+
+    if (clean) {
+        container.innerHTML = ""; // Limpiar el contenedor
+    }
 
     movies.forEach(movie => {
         const movieContainer = document.createElement('div');
@@ -90,8 +99,9 @@ async function getTrendingMoviesPreview() {
     trendingMoviesPreviewList.innerHTML = " ";
 
     createMovies(movies, trendingMoviesPreviewList, true);
-
 }
+
+let page = 1
 
 //GET - PELICULAS EN TENDENCIA - TRENDS
 async function getTrendingMovies() {
@@ -102,7 +112,36 @@ async function getTrendingMovies() {
 
     genericSection.innerHTML = " ";
 
-    createMovies(movies, genericSection);
+    createMovies(movies, genericSection, { lazyLoad: true, clean: true });
+
+    const btnLoadMore = document.createElement('button')
+    btnLoadMore.innerText = 'Cargas más';
+    btnLoadMore.id = 'btnLoadMore';
+    btnLoadMore.addEventListener('click', getPaginatedTrendingMovies);
+    genericSection.appendChild(btnLoadMore);
+}
+
+async function getPaginatedTrendingMovies() {
+    page++
+    const { data } = await api('trending/movie/day', {
+        params: {
+            page,
+        }
+    })
+
+    const movies = data.results;
+    //console.log({ data, movies }); //revisar datos que traemos
+
+    const btnLoadMore = document.getElementById('btnLoadMore');
+    document.querySelector('#btnLoadMore');
+    genericSection.removeChild(btnLoadMore);
+
+    createMovies(movies, genericSection, { lazyLoad: true, clean: false });
+
+    btnLoadMore.innerText = 'Cargas más';
+    btnLoadMore.id = 'btnLoadMore';
+    btnLoadMore.addEventListener('click', getPaginatedTrendingMovies);
+    genericSection.appendChild(btnLoadMore);
 }
 
 //GET - LISTA DE CATEGORIAS
