@@ -101,8 +101,6 @@ async function getTrendingMoviesPreview() {
     createMovies(movies, trendingMoviesPreviewList, true);
 }
 
-let page = 1
-
 //GET - PELICULAS EN TENDENCIA - TRENDS
 async function getTrendingMovies() {
     const { data } = await api('trending/movie/day')
@@ -114,37 +112,43 @@ async function getTrendingMovies() {
 
     createMovies(movies, genericSection, { lazyLoad: true, clean: true });
 
-    const btnLoadMore = document.createElement('button')
-    btnLoadMore.innerText = 'Cargas más';
-    btnLoadMore.id = 'btnLoadMore';
-    btnLoadMore.addEventListener('click', getPaginatedTrendingMovies);
-    genericSection.appendChild(btnLoadMore);
+    // const btnLoadMore = document.createElement('button')
+    // btnLoadMore.innerText = 'Cargas más';
+    // btnLoadMore.id = 'btnLoadMore';
+    // btnLoadMore.addEventListener('click', getPaginatedTrendingMovies);
+    // genericSection.appendChild(btnLoadMore);
 }
 
 async function getPaginatedTrendingMovies() {
-    page++
-    const { data } = await api('trending/movie/day', {
-        params: {
-            page,
-        }
-    })
 
-    const movies = data.results;
-    //console.log({ data, movies }); //revisar datos que traemos
+    const { scrollTop, scrollHeight, clientHeight } = document.documentElement
 
-    const btnLoadMore = document.getElementById('btnLoadMore');
-    document.querySelector('#btnLoadMore');
-    genericSection.removeChild(btnLoadMore);
+    const scrollsBottom = (scrollTop + clientHeight >= scrollHeight - 15)
 
-    createMovies(movies, genericSection, { lazyLoad: true, clean: false });
+    if (scrollsBottom) {
+        page++
+        const { data } = await api('trending/movie/day', {
+            params: {
+                page,
+            }
+        })
 
-    btnLoadMore.innerText = 'Cargas más';
-    btnLoadMore.id = 'btnLoadMore';
-    btnLoadMore.addEventListener('click', getPaginatedTrendingMovies);
-    genericSection.appendChild(btnLoadMore);
+        const movies = data.results;
+        createMovies(movies, genericSection, { lazyLoad: true, clean: false });
+    }
 }
 
+//console.log({ data, movies }); //revisar datos que traemos
+// const btnLoadMore = document.getElementById('btnLoadMore');
+// genericSection.removeChild(btnLoadMore);
+
+// btnLoadMore.innerText = 'Cargas más';
+// btnLoadMore.id = 'btnLoadMore';
+// btnLoadMore.addEventListener('click', getPaginatedTrendingMovies);
+// genericSection.appendChild(btnLoadMore);
+
 //GET - LISTA DE CATEGORIAS
+
 async function getCategoriesPreview() {
     const { data } = await api('genre/movie/list');
     const categories = data.genres;
