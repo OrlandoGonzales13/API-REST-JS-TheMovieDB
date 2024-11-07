@@ -1,3 +1,5 @@
+//DATA
+
 const api = axios.create({
     baseURL: 'https://api.themoviedb.org/3/',
     headers: {
@@ -8,6 +10,35 @@ const api = axios.create({
         'language': 'es-ES'
     }
 });
+
+function likedMoviesList() {
+    const item = JSON.parse(localStorage.getItem('liked_movies'));
+    let movies;
+
+    if (item) {
+        movies = item;
+    } else {
+        movies = {};
+    }
+
+    return movies;
+}
+
+function likeMovie(movie) {
+    // movie.id
+    const likedMovies = likedMoviesList();
+
+    console.log(likedMovies)
+
+    if (likedMovies[movie.id]) {
+        likedMovies[movie.id] = undefined;
+    } else {
+        likedMovies[movie.id] = movie;
+    }
+
+    localStorage.setItem('liked_movies', JSON.stringify(likedMovies));
+}
+
 
 //-------------UTILS-------------
 
@@ -37,9 +68,6 @@ function createMovies(
     movies.forEach(movie => {
         const movieContainer = document.createElement('div');
         movieContainer.classList.add('movie-container');
-        movieContainer.addEventListener('click', () => {
-            location.hash = '#movie=' + movie.id
-        })
 
         const movieImg = document.createElement('img');
         movieImg.classList.add('movie-img');
@@ -52,7 +80,21 @@ function createMovies(
 
         movieImg.addEventListener('error', () => {
             movieImg.setAttribute('src', 'https://media.istockphoto.com/id/1222249647/photo/creative-illustration.jpg?s=612x612&w=0&k=20&c=N6foEeJRoGSTl1LcN1RJ1aP_G3FhZ8aWku30iwtmT4A=');
+        });
+
+        movieImg.addEventListener('click', () => {
+            location.hash = '#movie=' + movie.id
         })
+
+        const movieBtn = document.createElement('button');
+        movieBtn.classList.add('movie-btn')
+        likedMoviesList()[movie.id] && movieBtn.classList.toggle('movie-btn--liked');
+        movieBtn.addEventListener('click', () => {
+            movieBtn.classList.toggle('movie-btn--liked');
+            likeMovie(movie);
+            getLikedMovies();
+            //
+        });
 
 
 
@@ -61,6 +103,7 @@ function createMovies(
         }
 
         movieContainer.appendChild(movieImg);
+        movieContainer.append(movieBtn)
         container.appendChild(movieContainer);
     });
 }
@@ -113,25 +156,29 @@ async function getTrendingMovies() {
 }
 
 async function getPaginatedTrendingMovies() {
+    const {
+        scrollTop,
+        scrollHeight,
+        clientHeight
+    } = document.documentElement;
 
-    const { scrollTop, scrollHeight, clientHeight } = document.documentElement
+    const scrollIsBottom = (scrollTop + clientHeight) >= (scrollHeight - 15);
+    const pageIsNotMax = page < maxPage;
 
-    const scrollsBottom = (scrollTop + clientHeight >= scrollHeight - 15)
-
-    const pageIsNotMax = page > maxPage;
-
-    if (scrollsBottom && pageIsNotMax) {
-        page++
+    if (scrollIsBottom && pageIsNotMax) {
+        page++;
         const { data } = await api('trending/movie/day', {
             params: {
                 page,
-            }
-        })
-
+            },
+        });
         const movies = data.results;
-        //console.log(data)
 
-        createMovies(movies, genericSection, { lazyLoad: true, clean: false });
+        createMovies(
+            movies,
+            genericSection,
+            { lazyLoad: true, clean: false },
+        );
     }
 }
 
@@ -275,5 +322,13 @@ async function getRelatedMoviesId(id) {
     createMovies(relatedMovies, relatedMoviesContainer)
 }
 
+//GET LOCAL STORAGE 
+function getLikedMovies() {
+
+    const likedMovies = likedMoviesList();
+    const moviesArray = Object.values(likedMovies);
+
+    createMovies(moviesArray, likedMoviesListArticle, { lazyLoad: true, clean: true })
+}
 
 

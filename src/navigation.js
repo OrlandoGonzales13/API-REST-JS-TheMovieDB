@@ -60,12 +60,14 @@ function homePage() {
     searchForm.classList.remove('inactive')
 
     trendingPreviewSection.classList.remove('inactive');
+    likedMoviesSection.classList.remove('inactive');
     categoriesPreviewSection.classList.remove('inactive');
     genericSection.classList.add('inactive');
     movieDetailSection.classList.add('inactive');
 
     getTrendingMoviesPreview();
     getCategoriesPreview();
+    getLikedMovies();
 }
 
 function categoriesPage() {
@@ -81,13 +83,14 @@ function categoriesPage() {
 
     trendingPreviewSection.classList.add('inactive');
     categoriesPreviewSection.classList.add('inactive');
+    likedMoviesSection.classList.add('inactive');
     genericSection.classList.remove('inactive');
     movieDetailSection.classList.add('inactive');
 
     const [_, categoryData] = location.hash.split('=') //=> ['category', 'id-name']
     const [categoryId, categoryName] = categoryData.split('-');
 
-    headerCategoryTitle.innerHTML = decodeURIComponent(categoryName);
+    headerCategoryTitle.innerHTML = categoryName;
     getMoviesByCategory(categoryId);
 
     infiniteScroll = getPaginatedMoviesByCategory(categoryId);
@@ -95,27 +98,29 @@ function categoriesPage() {
 }
 
 function movieDetailsPage() {
+    console.log('Movie!!');
+
     headerSection.classList.add('header-container--long');
-    //headerSection.style.background = '';
+    // headerSection.style.background = '';
     arrowBtn.classList.remove('inactive');
     arrowBtn.classList.add('header-arrow--white');
     headerTitle.classList.add('inactive');
     headerCategoryTitle.classList.add('inactive');
-    searchForm.classList.add('inactive')
+    searchForm.classList.add('inactive');
 
     trendingPreviewSection.classList.add('inactive');
     categoriesPreviewSection.classList.add('inactive');
+    likedMoviesSection.classList.add('inactive');
     genericSection.classList.add('inactive');
     movieDetailSection.classList.remove('inactive');
 
-    //['#movie', 'movieID']
-    const [_, movieID] = location.hash.split('=') //=> ['_', 'id-name'
-    getMovieById(movieID)
-
+    // ['#movie', '234567']
+    const [_, movieId] = location.hash.split('=');
+    getMovieById(movieId);
 }
 
 function searchPage() {
-    //console.log('Search!!');
+    console.log('Search!!');
 
     headerSection.classList.remove('header-container--long');
     headerSection.style.background = '';
@@ -123,22 +128,23 @@ function searchPage() {
     arrowBtn.classList.remove('header-arrow--white');
     headerTitle.classList.add('inactive');
     headerCategoryTitle.classList.add('inactive');
-    searchForm.classList.remove('inactive')
+    searchForm.classList.remove('inactive');
 
     trendingPreviewSection.classList.add('inactive');
     categoriesPreviewSection.classList.add('inactive');
+    likedMoviesSection.classList.add('inactive');
     genericSection.classList.remove('inactive');
     movieDetailSection.classList.add('inactive');
 
-    //['#search', 'busquedaEscrito']
-    const [_, query] = location.hash.split('=') //=> ['category', 'id-name']
+    // ['#search', 'platzi']
+    const [_, query] = location.hash.split('=');
     getMoviesBySearch(query);
 
     infiniteScroll = getPaginatedMoviesBySearch(query);
 }
 
 function trendsPage() {
-    //console.log('TRENDS!!');
+    console.log('TRENDS!!');
 
     headerSection.classList.remove('header-container--long');
     headerSection.style.background = '';
@@ -146,15 +152,16 @@ function trendsPage() {
     arrowBtn.classList.remove('header-arrow--white');
     headerTitle.classList.add('inactive');
     headerCategoryTitle.classList.remove('inactive');
-    searchForm.classList.add('inactive')
+    searchForm.classList.add('inactive');
 
     trendingPreviewSection.classList.add('inactive');
     categoriesPreviewSection.classList.add('inactive');
+    likedMoviesSection.classList.add('inactive');
     genericSection.classList.remove('inactive');
     movieDetailSection.classList.add('inactive');
 
     headerCategoryTitle.innerHTML = 'Tendencias';
-    getTrendingMovies();
 
+    getTrendingMovies();
     infiniteScroll = getPaginatedTrendingMovies;
 }
